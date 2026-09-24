@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------------------
+# Why this file exists: prevents secrets, build artifacts and local machine
+# noise from ever being committed to any of the 4 branches or main.
+# The single most important line here is ".env" — that is what keeps every
+# API key in API_KEYS.txt OUT of GitHub history.
+# ---------------------------------------------------------------------------
+
+# Dependency directories (reinstalled via `npm install`, never committed)
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Environment files containing secrets (VirusTotal, AbuseIPDB, OTX, Gemini keys)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Build output
+frontend/dist/
+backend/dist/
+
+# SQLite database (contains cached IoC lookup history — local dev data, not code)
+backend/data/*.sqlite
+backend/data/*.sqlite-journal
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor noise
+.DS_Store
+.vscode/
+.idea/
