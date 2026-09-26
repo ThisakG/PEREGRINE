@@ -1,0 +1,364 @@
+/* ============================================================================
+   index.css  (Member 04 - Result Displaying & Export Capability)
+   ----------------------------------------------------------------------------
+   WHAT: The whole visual theme, defined once as CSS custom properties so
+         every component reads from the same palette rather than
+         hardcoding hex values in a dozen places.
+   WHY grayscale + a single green accent:
+         Per the brief - a threat-intel tool should read as calm, technical
+         and monochrome by default so the ONE color that appears (green)
+         reliably draws the eye to what matters: safe/clean verdicts,
+         primary actions, and the Peregrine brand accent. Risk colors
+         (amber/red) are intentionally kept OUTSIDE this neutral palette so
+         they stand out even more sharply against the gray field.
+   ABOUT THE LOGO / EXACT BRAND GREEN:
+         Peregrine_logo.docx (the uploaded resource) contains no actual
+         embedded image - just the words "Peregrine logo:". --color-accent
+         below is a placeholder professional green. The moment you have the
+         real logo file, open it, sample its exact green with any color
+         picker, and update ONLY the --color-accent value below - every
+         button, link and highlight in the app will update automatically.
+   ============================================================================ */
+
+:root {
+  /* --- Grayscale base ---------------------------------------------- */
+  --color-bg: #121212;
+  --color-surface: #1c1c1c;
+  --color-surface-alt: #262626;
+  --color-border: #3a3a3a;
+  --color-text: #e8e8e8;
+  --color-text-muted: #9a9a9a;
+
+  /* --- Green accent (swap for the real brand color - see note above) */
+  --color-accent: #21c67a;
+  --color-accent-hover: #1aa866;
+  --color-accent-muted: rgba(33, 198, 122, 0.15);
+
+  /* --- Verdict / risk colors (deliberately outside the gray/green palette
+     so danger states are never mistaken for the "safe" accent green) --- */
+  --color-clean: #21c67a;
+  --color-suspicious: #e6b422;
+  --color-malicious: #e05252;
+  --color-unknown: #7a7a7a;
+
+  --radius: 10px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px 80px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.brand h1 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.brand .tagline {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+/* --- Big central search bar (the app's focal point per the brief) ----- */
+.search-shell {
+  width: 100%;
+  max-width: 680px;
+  margin-top: 6vh;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 6px 6px 6px 26px;
+  transition: border-color 0.15s ease;
+}
+
+.search-bar:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
+}
+
+.search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-size: 17px;
+  padding: 14px 8px;
+}
+
+.search-bar input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search-bar button {
+  background: var(--color-accent);
+  color: #0c0c0c;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+
+.search-bar button:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.search-bar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.search-hint {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.error-banner {
+  width: 100%;
+  max-width: 680px;
+  background: rgba(224, 82, 82, 0.12);
+  border: 1px solid var(--color-malicious);
+  color: #ffb3b3;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* --- Results ----------------------------------------------------------- */
+.results {
+  width: 100%;
+  max-width: 780px;
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+}
+
+.card h2 {
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-text-muted);
+  margin: 0 0 14px;
+}
+
+.verdict-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.verdict-pill.clean { background: rgba(33,198,122,0.15); color: var(--color-clean); }
+.verdict-pill.suspicious { background: rgba(230,180,34,0.15); color: var(--color-suspicious); }
+.verdict-pill.malicious { background: rgba(224,82,82,0.15); color: var(--color-malicious); }
+.verdict-pill.unknown { background: rgba(122,122,122,0.15); color: var(--color-unknown); }
+
+.score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.score-number {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.score-label {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.summary-text {
+  line-height: 1.6;
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.recommendations {
+  margin: 12px 0 0;
+  padding-left: 20px;
+}
+
+.recommendations li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+/* --- Correlation matrix table (the important component) ---------------- */
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.matrix-table th {
+  text-align: left;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.matrix-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.matrix-table tr:last-child td {
+  border-bottom: none;
+}
+
+.matrix-table .source-name {
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.matrix-table .score-bar-track {
+  background: var(--color-surface-alt);
+  border-radius: 999px;
+  height: 8px;
+  width: 100%;
+  min-width: 100px;
+  overflow: hidden;
+}
+
+.matrix-table .score-bar-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 999px;
+}
+
+.matrix-table .score-bar-fill.suspicious { background: var(--color-suspicious); }
+.matrix-table .score-bar-fill.malicious { background: var(--color-malicious); }
+
+.unavailable-row {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.export-buttons button {
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.export-buttons button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* --- History panel ------------------------------------------------------ */
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-surface-alt);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.history-item:hover {
+  border-color: var(--color-accent);
+}
+
+.history-item .ioc-value {
+  font-family: var(--font-mono);
+}
+
+.cache-badge {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  margin-top: -6px;
+}
+
+.loading-text {
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+}
