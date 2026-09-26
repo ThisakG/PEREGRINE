@@ -21,20 +21,10 @@
 
 export default function Logo() {
   return (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Peregrine logo placeholder"
-    >
-      {/* Simple abstracted falcon-wing chevron - swap for the real mark per the note above */}
-      <path
-        d="M4 34 L24 8 L44 34 L24 24 Z"
-        fill="var(--color-accent)"
-      />
-      <circle cx="24" cy="30" r="3" fill="var(--color-text)" />
-    </svg>
+    <img
+      src="/logoo.png"
+      alt="Peregrine"
+      height="180"
+    />
   );
 }

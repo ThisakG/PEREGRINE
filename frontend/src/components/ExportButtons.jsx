@@ -9,17 +9,14 @@
 import { useState } from "react";
 import { downloadExport } from "../services/api.js";
 
-export default function ExportButtons({ ioc }) {
+export default function ExportButtons({ historyId }) {
   const [busy, setBusy] = useState(null);
 
   async function handleExport(format) {
     setBusy(format);
     try {
-      await downloadExport(ioc, format);
+      await downloadExport(historyId, format);
     } catch (err) {
-      // Export failures are non-critical to the main flow, so we just
-      // surface a lightweight alert here rather than a page-level error
-      // banner - the analyst's results are still fully visible either way.
       alert(`Export failed: ${err.message}`);
     } finally {
       setBusy(null);

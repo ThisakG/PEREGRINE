@@ -20,7 +20,7 @@
 // =============================================================================
 
 import { buildAiPrompt } from "./promptBuilder.js";
-import { callGemini } from "./geminiClient.js";
+import { callGroq } from "./groqClient.js";;
 import { logger } from "../../utils/logger.js";
 
 const ALLOWED_RISK_RATINGS = new Set(["low", "medium", "high", "critical"]);
@@ -28,6 +28,7 @@ const ALLOWED_RISK_RATINGS = new Set(["low", "medium", "high", "critical"]);
 function isValidShape(parsed) {
   return (
     parsed &&
+    typeof parsed.background === "string" &&
     typeof parsed.summary === "string" &&
     ALLOWED_RISK_RATINGS.has(parsed.riskRating) &&
     Array.isArray(parsed.recommendations) &&
@@ -48,7 +49,7 @@ function isValidShape(parsed) {
 export async function synthesizeAiSummary(ioc, matrix) {
   try {
     const prompt = buildAiPrompt(ioc, matrix);
-    const rawText = await callGemini(prompt);
+        const rawText = await callGroq(prompt);
 
     let parsed;
     try {
@@ -68,6 +69,7 @@ export async function synthesizeAiSummary(ioc, matrix) {
     // Defensive cap: even though we asked for 3-5 recommendations, never
     // let a runaway response balloon the UI or the stored cache row.
     return {
+      background: parsed.background.slice(0, 1200),
       summary: parsed.summary.slice(0, 2000),
       riskRating: parsed.riskRating,
       recommendations: parsed.recommendations.slice(0, 8).map((r) => r.slice(0, 500)),

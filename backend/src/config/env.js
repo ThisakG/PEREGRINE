@@ -58,6 +58,16 @@ export const env = {
     ciscoTalosApiKey: readEnv("CISCO_TALOS_API_KEY"),
   },
 
+  deepseek: {
+    apiKey: readEnv("DEEPSEEK_API_KEY"),
+    model: readEnv("DEEPSEEK_MODEL", { fallback: "deepseek-chat" }),
+  },
+
+  groq: {
+    apiKey: readEnv("GROQ_API_KEY"),
+    model: readEnv("GROQ_MODEL", { fallback: "openai/gpt-oss-120b" }),
+  },
+
   gemini: {
     // Collected into an array and filtered so the key-rotation pool
     // (services/ai/geminiKeyPool.js) can work with however many of the

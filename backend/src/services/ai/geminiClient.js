@@ -20,7 +20,7 @@ import { env } from "../../config/env.js";
 import { getRotatedKeyOrder, hasAnyGeminiKey } from "./geminiKeyPool.js";
 import { logger } from "../../utils/logger.js";
 
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 25000;
 
 const RESPONSE_SCHEMA = {
   type: "object",

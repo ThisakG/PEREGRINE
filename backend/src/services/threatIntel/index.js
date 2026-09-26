@@ -16,7 +16,6 @@
 import { lookupVirusTotal } from "./virusTotal.js";
 import { lookupAbuseIPDB } from "./abuseIPDB.js";
 import { lookupOtx } from "./alienVaultOtx.js";
-import { lookupCiscoTalos } from "./ciscoTalos.js";
 import { logger } from "../../utils/logger.js";
 
 /**
@@ -29,7 +28,6 @@ export async function queryAllSources(ioc, keys) {
     lookupVirusTotal(ioc, keys.virusTotalApiKey),
     lookupAbuseIPDB(ioc, keys.abuseIpdbApiKey),
     lookupOtx(ioc, keys.otxApiKey),
-    lookupCiscoTalos(ioc, keys.ciscoTalosApiKey),
   ];
 
   const settled = await Promise.allSettled(tasks);
@@ -39,7 +37,7 @@ export async function queryAllSources(ioc, keys) {
     // A connector threw instead of returning its own error object - log it
     // and degrade gracefully with a generic "error" entry so one bad
     // source can never take down the whole correlation matrix.
-    const sourceNames = ["VirusTotal", "AbuseIPDB", "AlienVault OTX", "Cisco Talos"];
+    const sourceNames = ["VirusTotal", "AbuseIPDB", "AlienVault OTX"];
     logger.error("Threat-intel connector threw unexpectedly", {
       source: sourceNames[index],
       reason: String(result.reason),

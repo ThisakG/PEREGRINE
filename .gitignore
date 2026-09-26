@@ -24,6 +24,8 @@ backend/dist/
 # SQLite database (contains cached IoC lookup history — local dev data, not code)
 backend/data/*.sqlite
 backend/data/*.sqlite-journal
+backend/data/*.sqlite-wal
+backend/data/*.sqlite-shm
 
 # Logs
 *.log

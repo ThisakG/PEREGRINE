@@ -77,16 +77,24 @@ function normalize(rawResponse) {
   if (malicious > 0) verdict = "malicious";
   else if (suspicious > 0) verdict = "suspicious";
 
+  const attrs = rawResponse?.data?.attributes ?? {};
+  const context = {};
+  if (attrs.as_owner) context.networkOwner = attrs.as_owner;
+  if (attrs.country) context.country = attrs.country;
+  if (attrs.registrar) context.registrar = attrs.registrar;
+  if (attrs.creation_date) context.domainCreated = new Date(attrs.creation_date * 1000).toISOString().slice(0, 10);
+  if (attrs.type_description) context.fileType = attrs.type_description;
+  if (attrs.meaningful_name) context.fileName = attrs.meaningful_name;
+  if (attrs.title) context.pageTitle = attrs.title;
+
   return {
     source: "VirusTotal",
     available: true,
     verdict,
     maliciousCount: malicious + suspicious,
     totalEngines,
-    // VT doesn't give a single 0-100 score, so we derive one: proportion
-    // of engines that flagged it, which the correlation matrix combines
-    // with the other sources' scores.
     reputationScore: totalEngines > 0 ? Math.round((malicious / totalEngines) * 100) : null,
+    context,
     raw: rawResponse.data,
   };
 }

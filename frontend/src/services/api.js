@@ -41,10 +41,15 @@ export async function fetchHistory(limit = 20) {
   return res.json();
 }
 
-export async function downloadExport(ioc, format) {
+export async function fetchHistoryEntry(id) {
+  const res = await request(`/api/ioc/history/${id}`);
+  return res.json();
+}
+
+export async function downloadExport(historyId, format) {
   const res = await request(`/api/export/${format}`, {
     method: "POST",
-    body: JSON.stringify({ ioc }),
+    body: JSON.stringify({ historyId }),
   });
   const blob = await res.blob();
   const url = window.URL.createObjectURL(blob);

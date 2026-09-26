@@ -30,8 +30,8 @@
   --color-text-muted: #9a9a9a;
 
   /* --- Green accent (swap for the real brand color - see note above) */
-  --color-accent: #21c67a;
-  --color-accent-hover: #1aa866;
+  --color-accent: #099953;
+  --color-accent-hover: #11a559;
   --color-accent-muted: rgba(33, 198, 122, 0.15);
 
   /* --- Verdict / risk colors (deliberately outside the gray/green palette

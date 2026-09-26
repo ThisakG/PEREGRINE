@@ -16,7 +16,7 @@ function VerdictPill({ verdict }) {
   return <span className={`verdict-pill ${known}`}>{verdict}</span>;
 }
 
-export default function SummaryCard({ ioc, matrix, ai, fromCache, cachedAt }) {
+export default function SummaryCard({ ioc, matrix, ai }) {
   return (
     <div className="card">
       <h2>Overview</h2>
@@ -31,13 +31,12 @@ export default function SummaryCard({ ioc, matrix, ai, fromCache, cachedAt }) {
         </div>
       </div>
 
-      {fromCache && (
-        <p className="cache-badge">Served from search history (cached {new Date(cachedAt).toLocaleString()})</p>
-      )}
-
       <div style={{ marginTop: 18 }}>
-        {ai ? (
+                {ai ? (
           <>
+            <span className="score-label" style={{ display: "block", marginBottom: 4 }}>Background</span>
+            <p className="summary-text" style={{ marginBottom: 16 }}>{ai.background}</p>
+            <span className="score-label" style={{ display: "block", marginBottom: 4 }}>Threat assessment</span>
             <p className="summary-text">{ai.summary}</p>
             <div style={{ margin: "12px 0" }}>
               <span className="score-label" style={{ marginRight: 8 }}>AI risk rating:</span>

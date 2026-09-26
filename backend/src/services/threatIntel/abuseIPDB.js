@@ -22,13 +22,20 @@ function normalize(rawData) {
   else if (score >= 75) verdict = "malicious";
   else if (score >= 25) verdict = "suspicious";
 
+  const context = {};
+  if (rawData?.isp) context.isp = rawData.isp;
+  if (rawData?.usageType) context.usageType = rawData.usageType;
+  if (rawData?.countryCode) context.country = rawData.countryCode;
+  if (rawData?.domain) context.associatedDomain = rawData.domain;
+
   return {
     source: "AbuseIPDB",
     available: true,
     verdict,
     maliciousCount: rawData?.totalReports ?? 0,
-    totalEngines: null, // AbuseIPDB is report-based, not multi-engine like VT
+    totalEngines: null,
     reputationScore: score,
+    context,
     raw: rawData,
   };
 }

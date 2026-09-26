@@ -41,15 +41,21 @@ function normalize(rawData) {
   if (pulseCount >= 5) verdict = "malicious";
   else if (pulseCount >= 1) verdict = "suspicious";
 
+  const context = {};
+  if (rawData?.country_name) context.country = rawData.country_name;
+  if (rawData?.asn) context.asn = rawData.asn;
+  if (rawData?.city) context.city = rawData.city;
+  const pulseNames = (rawData?.pulse_info?.pulses ?? []).slice(0, 5).map((p) => p.name).filter(Boolean);
+  if (pulseNames.length > 0) context.associatedThreatReports = pulseNames;
+
   return {
     source: "AlienVault OTX",
     available: true,
     verdict,
     maliciousCount: pulseCount,
     totalEngines: null,
-    // Cap the derived score at 100 for a consistent 0-100 scale with the
-    // other sources, using a simple diminishing-returns style formula.
     reputationScore: Math.min(100, pulseCount * 15),
+    context,
     raw: rawData,
   };
 }

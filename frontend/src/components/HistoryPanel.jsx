@@ -11,36 +11,31 @@ function VerdictDot({ verdict }) {
   const known = ["clean", "suspicious", "malicious"].includes(verdict) ? verdict : "unknown";
   return (
     <span
-      style={{
-        display: "inline-block",
-        width: 8,
-        height: 8,
-        borderRadius: "50%",
-        marginRight: 8,
-        background: `var(--color-${known})`,
-      }}
+      style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", marginRight: 8, background: `var(--color-${known})` }}
     />
   );
 }
 
-export default function HistoryPanel({ items, onSelect }) {
+export default function HistoryPanel({ items }) {
   if (!items || items.length === 0) return null;
+
+  function openInNewTab(id) {
+    const url = new URL(window.location.href);
+    url.search = `?historyId=${id}`;
+    window.open(url.toString(), "_blank", "noopener,noreferrer");
+  }
 
   return (
     <div className="card">
       <h2>Recent searches</h2>
       <ul className="history-list">
         {items.map((item) => (
-          <li
-            key={`${item.iocType}:${item.iocValue}`}
-            className="history-item"
-            onClick={() => onSelect(item.iocValue)}
-          >
+          <li key={item.id} className="history-item" onClick={() => openInNewTab(item.id)}>
             <span>
               <VerdictDot verdict={item.overallVerdict} />
               <span className="ioc-value">{item.iocValue}</span>
             </span>
-            <span className="score-label">{item.consolidatedConfidenceScore ?? "—"}/100</span>
+            <span className="score-label">{item.consolidatedConfidenceScore ?? "—"}/100 · opens in new tab ↗</span>
           </li>
         ))}
       </ul>

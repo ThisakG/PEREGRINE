@@ -17,6 +17,7 @@
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { env } from "../config/env.js";
 import { logger } from "../utils/logger.js";
 
@@ -40,7 +41,7 @@ db.pragma("journal_mode = WAL");
 // a second table (e.g. a future users table) is added.
 db.pragma("foreign_keys = ON");
 
-const schemaPath = path.join(path.dirname(new URL(import.meta.url).pathname), "schema.sql");
+const schemaPath = path.join(path.dirname(fileURLToPath(import.meta.url)), "schema.sql");
 const schema = fs.readFileSync(schemaPath, "utf-8");
 db.exec(schema);
 
