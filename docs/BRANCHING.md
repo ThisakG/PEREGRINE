@@ -40,3 +40,4 @@ person per pipeline stage: Members 01-02 own everything up to and
 including the correlation matrix, Members 03-04 own everything from the
 matrix onward. The branch names mirror that directly, so a look at
 `git log --oneline --graph --all` tells the story of who built what.
+Maintained by Sayuni - ai synthesis
